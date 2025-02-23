@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import * as d3 from "d3";
+import Child1 from "./Child1"; 
+import Child2 from "./Child2"; 
+import './App.css'
 
-function App() {
+const App = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    d3.csv("/tips.csv").then((data) => {
+      const formattedData = data.map((d) => ({
+        total_bill: +d.total_bill,
+        tip: +d.tip,
+        day: d.day,
+      }));
+      setData(formattedData);
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {data.length > 0 ? (
+        <>
+          <Child1 data={data} />
+          <Child2 data={data} />
+        </>
+      ) : (
+        <p>Loading data...</p>
+      )}
     </div>
   );
-}
+};
 
 export default App;
