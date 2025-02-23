@@ -31,12 +31,17 @@ const Child1 = ({ data }) => {
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale);
 
-    svg.select(".x-axis")
-      .style("transform", `translateY(${height - margin.bottom}px)`)
+    svg.select(".x-axis").remove();
+    svg.select(".y-axis").remove();
+
+    svg.append("g")
+      .attr("class", "x-axis")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(xAxis);
 
-    svg.select(".y-axis")
-      .style("transform", `translateX(${margin.left}px)`)
+    svg.append("g")
+      .attr("class", "y-axis")
+      .attr("transform", `translate(${margin.left},0)`)
       .call(yAxis);
 
     svg.selectAll(".dot")
